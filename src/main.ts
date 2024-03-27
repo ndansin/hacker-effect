@@ -4,7 +4,8 @@ document.querySelector<HTMLDivElement>("#app")!.onmouseover = (
   event: MouseEvent
 ) => {
   let iteration = 0;
-  const letters = event?.target?.innerText.split("");
+  const innerText = (event?.target as unknown as {innerText: string})?.innerText;
+  const letters = innerText.split("");
   const fun = 3;
 
   const interval = setInterval(() => {
@@ -12,7 +13,7 @@ document.querySelector<HTMLDivElement>("#app")!.onmouseover = (
       clearInterval(interval);
     }
 
-    event!.target!.innerText = letters
+    (document.querySelector<HTMLDivElement>("#app") as HTMLDivElement).innerText = letters
     .map((letter, index) => {
       if (" " === letter || fun + index < iteration) {
         return letter;
@@ -27,5 +28,5 @@ document.querySelector<HTMLDivElement>("#app")!.onmouseover = (
 };
 
 function randomLetter() {
-  return String.fromCharCode("A".charCodeAt() + Math.floor(Math.random() * 26));
+  return String.fromCharCode("A".charCodeAt(0) + Math.floor(Math.random() * 26));
 }
